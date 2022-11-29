@@ -6,7 +6,8 @@ const router = express.Router();
 router.post("/post", async (req, res) => {
   const data = new Model({
     name: req.body.name,
-    age: req.body.age,
+    brand: req.body.brand,
+    quantity: req.body.quantity,
   });
 
   try {
@@ -18,21 +19,14 @@ router.post("/post", async (req, res) => {
 });
 
 //Get all Method
-router.get(
-  "/getAll",
-  (req, res, next) => {
-    console.log("hello getall");
-    next();
-  },
-  async (req, res) => {
-    try {
-      const data = await Model.find();
-      res.json(data);
-    } catch (error) {
-      res.status(500).json({ message: error.message });
-    }
+router.get("/getAll", async (req, res) => {
+  try {
+    const data = await Model.find();
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
-);
+});
 
 //Get by ID Method
 router.get("/getOne/:id", async (req, res) => {

@@ -1,0 +1,19 @@
+/* show page */
+.addBtn {
+  float: right;
+  width: 100px;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 20px;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+
+/* create page */
+.submitBtn {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 20px;
+}
