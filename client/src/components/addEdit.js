@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function Update() {
+export default function AddEdit() {
   const [nam, setNam] = useState("");
   const [brand, setBrand] = useState("");
   const [quantity, setQuantity] = useState("");
@@ -27,21 +27,31 @@ export default function Update() {
 
   const submit = (e) => {
     e.preventDefault();
-    console.log("submit form", nam, brand, quantity);
     const data = {
       name: nam,
       brand,
       quantity,
     };
-    axios
-      .put(`${process.env.REACT_APP_BASE_PATH}/api/update/${id}`, data)
-      .then((resp) => {
-        console.log("resp", resp);
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log("error is", err);
-      });
+
+    id
+      ? axios
+          .put(`${process.env.REACT_APP_BASE_PATH}/api/update/${id}`, data)
+          .then((resp) => {
+            console.log("resp", resp);
+            navigate("/", { state: "edit" });
+          })
+          .catch((err) => {
+            console.log("error is", err);
+          })
+      : axios
+          .post(`${process.env.REACT_APP_BASE_PATH}/api/post`, data)
+          .then((resp) => {
+            console.log("resp", resp);
+            navigate("/", { state: "add" });
+          })
+          .catch((err) => {
+            console.log("error is", err);
+          });
     setNam("");
     setBrand("");
     setQuantity("");
@@ -50,7 +60,7 @@ export default function Update() {
   return (
     <div className="container">
       <form onSubmit={(e) => submit(e)}>
-        <h4 className="text-center">Update Page</h4>
+        <h4 className="text-center">{id ? "Update" : "Add"} Page</h4>
         <div className="row mb-3">
           <label className="col-sm-2" htmlFor="nam">
             Name-

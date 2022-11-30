@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Show from "./components/show";
 import Create from "./components/create";
 import Update from "./components/update";
+import AddEdit from "./components/addEdit";
 
 function App() {
   return (
@@ -10,7 +11,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Show />}></Route>
         <Route path="/create" element={<Create />}></Route>
-        <Route path="/update" element={<Update />}></Route>
+        <Route path="/update/:id" element={<Update />}></Route>
+
+        <Route path="/addEdit" element={<AddEdit />}></Route>
+        <Route path="/addEdit/:id" element={<AddEdit />}></Route>
       </Routes>
     </Router>
   );

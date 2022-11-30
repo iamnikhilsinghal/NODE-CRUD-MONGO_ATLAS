@@ -18,7 +18,7 @@ export default function Create() {
       quantity,
     };
     axios
-      .post("http://localhost:8080/api/post", data)
+      .post(`${process.env.REACT_APP_BASE_PATH}/api/post`, data)
       .then((resp) => {
         console.log("resp", resp);
         navigate("/");
