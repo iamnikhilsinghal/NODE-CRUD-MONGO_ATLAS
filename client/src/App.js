@@ -1,22 +1,24 @@
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Show from "./components/show";
+// import MaterialForm from "./components/materialForm";
 import Create from "./components/create";
+import Navbar from "./components/navbar";
+import Show from "./components/show";
 import Update from "./components/update";
-import AddEdit from "./components/addEdit";
+import CreateMaterial from "./components/createMaterial";
 
 function App() {
+  // return <Show />;
   return (
-    <Router>
+    <BrowserRouter>
+      <Navbar />
       <Routes>
-        <Route path="/" element={<Show />}></Route>
-        <Route path="/create" element={<Create />}></Route>
-        <Route path="/update/:id" element={<Update />}></Route>
-
-        <Route path="/addEdit" element={<AddEdit />}></Route>
-        <Route path="/addEdit/:id" element={<AddEdit />}></Route>
+        <Route path="/" element={<Show />} />
+        <Route path="/create" element={<Create />} />
+        <Route path="/update/:id" element={<Update />} />
+        <Route path="/materialForm" element={<CreateMaterial />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 

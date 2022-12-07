@@ -64,4 +64,14 @@ router.delete("/delete/:id", async (req, res) => {
   }
 });
 
+router.get("/search/:title", async (req, res) => {
+  const { title } = req.params;
+  try {
+    const data = await Model.find({ name: { $regex: title, $options: "i" } });
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 module.exports = router;

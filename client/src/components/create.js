@@ -2,91 +2,119 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Create() {
-  const [nam, setNam] = useState("");
+export default function Create(props) {
+  const [nam, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [quantity, setQuantity] = useState("");
 
   const navigate = useNavigate();
 
+  const validateForm = () => {
+    if (nam === null || nam === "") {
+      document.getElementById("nameErr").innerHTML = "Name can't be blank";
+      return false;
+    } else {
+      document.getElementById("nameErr").innerHTML = "";
+    }
+    if (brand === null || brand === "") {
+      document.getElementById("brandErr").innerHTML = "Brand can't be blank";
+      return false;
+    } else {
+      document.getElementById("brandErr").innerHTML = "";
+    }
+    console.log("quantity", quantity);
+    if (quantity === null || quantity === "") {
+      document.getElementById("qntyErr").innerHTML = "Quantity can't be blank";
+      return false;
+    } else {
+      document.getElementById("qntyErr").innerHTML = "";
+    }
+    return true;
+  };
+
   const submit = (e) => {
     e.preventDefault();
-    console.log("submit form", nam, brand, quantity);
-    const data = {
-      name: nam,
-      brand,
-      quantity,
-    };
-    axios
-      .post(`${process.env.REACT_APP_BASE_PATH}/api/post`, data)
-      .then((resp) => {
-        console.log("resp", resp);
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log("error is", err);
-      });
-    setNam("");
-    setBrand("");
-    setQuantity("");
+    const res = validateForm();
+    if (res) {
+      const data = {
+        name: nam,
+        brand: brand,
+        quantity: quantity,
+      };
+      axios
+        .post(`http://localhost:8080/api/post`, data)
+        .then((resp) => {
+          console.log("resp", resp);
+          props.handleClose();
+          navigate("/");
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
   };
 
   return (
-    <div className="container">
+    <div className="container text-center">
+      <h4>Create Page</h4>
       <form onSubmit={(e) => submit(e)}>
-        <h4 className="text-center">Create Page</h4>
         <div className="row mb-3">
-          <label className="col-sm-2" htmlFor="nam">
+          <label className="col-sm-1" htmlFor="nam">
             Name-
           </label>
-          <div className="col-sm-10">
+          <div className="col-sm-4">
             <input
               className="form-control"
               type="text"
-              value={nam}
               name="nam"
-              onChange={(e) => setNam(e.target.value)}
+              value={nam}
+              onChange={(e) => setName(e.target.value)}
             />
+          </div>
+          <div className="col-sm-2">
+            <span id="nameErr" className="red"></span>
           </div>
         </div>
 
-        <div className="row  mb-3">
-          <label className="col-sm-2" htmlFor="brand">
+        <div className="row mb-3">
+          <label className="col-sm-1" htmlFor="brand">
             Brand-
           </label>
-          <div className="col-sm-10">
+          <div className="col-sm-4">
             <input
               className="form-control"
               type="text"
-              value={brand}
               name="brand"
+              value={brand}
               onChange={(e) => setBrand(e.target.value)}
             />
           </div>
-        </div>
-
-        <div className="row mb-3">
-          <label className="col-sm-2" htmlFor="quantity">
-            Quantity-
-          </label>
-          <div className="col-sm-10">
-            <input
-              className="form-control"
-              type="text"
-              value={quantity}
-              name="quantity"
-              onChange={(e) => setQuantity(e.target.value)}
-            />
+          <div className="col-sm-2">
+            <span id="brandErr" className="red"></span>
           </div>
         </div>
 
         <div className="row">
-          <div className="col-sm-6">
-            <button type="submit" className="btn btn-primary">
-              Submit Form
-            </button>
+          <label className="col-sm-1" htmlFor="quantity">
+            Quantity-
+          </label>
+          <div className="col-sm-4">
+            <input
+              className="form-control"
+              type="text"
+              name="quantity"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+          </div>
+          <div className="col-sm-2">
+            <span id="qntyErr" className="red"></span>
           </div>
         </div>
+
+        <button type="submit" className="btn btn-primary mt-3">
+          Submit Data
+        </button>
       </form>
     </div>
   );

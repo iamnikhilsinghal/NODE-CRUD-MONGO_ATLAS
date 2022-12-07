@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 export default function Update() {
-  const [nam, setNam] = useState("");
+  const [nam, setName] = useState("");
   const [brand, setBrand] = useState("");
   const [quantity, setQuantity] = useState("");
 
@@ -12,11 +12,11 @@ export default function Update() {
 
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_BASE_PATH}/api/getOne/${id}`)
+      .get(`http://localhost:8080/api/getOne/${id}`)
       .then((resp) => {
         console.log("resp", resp);
         const { name, brand, quantity } = resp.data;
-        setNam(name);
+        setName(name);
         setBrand(brand);
         setQuantity(quantity);
       })
@@ -27,82 +27,75 @@ export default function Update() {
 
   const submit = (e) => {
     e.preventDefault();
-    console.log("submit form", nam, brand, quantity);
+    console.log(nam, brand, quantity);
     const data = {
       name: nam,
-      brand,
-      quantity,
+      brand: brand,
+      quantity: quantity,
     };
     axios
-      .put(`${process.env.REACT_APP_BASE_PATH}/api/update/${id}`, data)
+      .put(`http://localhost:8080/api/update/${id}`, data)
       .then((resp) => {
         console.log("resp", resp);
         navigate("/");
       })
       .catch((err) => {
-        console.log("error is", err);
+        console.log("err", err);
       });
-    setNam("");
-    setBrand("");
-    setQuantity("");
   };
 
   return (
-    <div className="container">
+    <div className="container text-center">
+      <h4>Update Page- {id}</h4>
       <form onSubmit={(e) => submit(e)}>
-        <h4 className="text-center">Update Page</h4>
         <div className="row mb-3">
-          <label className="col-sm-2" htmlFor="nam">
+          <label className="col-sm-1" htmlFor="nam">
             Name-
           </label>
-          <div className="col-sm-10">
+          <div className="col-sm-6">
             <input
               className="form-control"
               type="text"
-              value={nam}
               name="nam"
-              onChange={(e) => setNam(e.target.value)}
+              value={nam}
+              onChange={(e) => setName(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="row  mb-3">
-          <label className="col-sm-2" htmlFor="brand">
+        <div className="row mb-3">
+          <label className="col-sm-1" htmlFor="brand">
             Brand-
           </label>
-          <div className="col-sm-10">
+          <div className="col-sm-6">
             <input
               className="form-control"
               type="text"
-              value={brand}
               name="brand"
+              value={brand}
               onChange={(e) => setBrand(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="row mb-3">
-          <label className="col-sm-2" htmlFor="quantity">
+        <div className="row">
+          <label className="col-sm-1" htmlFor="quantity">
             Quantity-
           </label>
-          <div className="col-sm-10">
+          <div className="col-sm-6">
             <input
               className="form-control"
               type="text"
-              value={quantity}
               name="quantity"
+              value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
             />
           </div>
         </div>
 
-        <div className="row">
-          <div className="col-sm-6">
-            <button type="submit" className="btn btn-primary">
-              Submit Form
-            </button>
-          </div>
-        </div>
+        <button type="submit" className="btn btn-primary mt-3">
+          Submit Data
+        </button>
       </form>
     </div>
   );
